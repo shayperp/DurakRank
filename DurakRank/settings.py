@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0b^03i*y^q1$sh_0i-y&6jt^98h7+d)n(7&7hz47_0w9qq--*&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'https://durakrank.herokuapp.com']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'records.apps.RecordsConfig',
-    'newgame'
+    'newgame',
+
 ]
 
 MIDDLEWARE = [
