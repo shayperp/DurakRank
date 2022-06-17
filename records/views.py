@@ -1,11 +1,10 @@
 from django.shortcuts import render
-
-
 # Create your views here.
 
+
 def index(request):
-    context = {'index_text': "welcome to index page", }
-    return render(request, 'index.html', context)
+
+    return render(request, 'index.html')
 
 
 def records_page(request):

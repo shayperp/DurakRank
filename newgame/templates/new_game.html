@@ -9,42 +9,30 @@
     </br>
     {% if messages %}
     {%for message in messages %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{message}}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+
     {%endfor%}
     {% endif %}
     <form method="POST" class="row">
         {% csrf_token %}
         <label class="col-lg-4"></label>
-        <input type="text" class="form-control col-lg-6" name="game" placeholder="New game?">
+        <input type="text" class="form-control col-lg-6" name="game_name" placeholder="Enter game name ">
 
 
         <button type="Start" class="btn btn-primary col-lg-2">start new game</button>
     </form>
     </br>
-    <table class="table table-bordered text-center">
-        <thead class="thead-dark">
-        <tr>
-            <th class="col-5">Task</th>
-            <th class="col-5">Done</th>
-            <th class="col-2">Edit</th>
-            <th class="col-1">Delete</th>
-        </tr>
-        </thead>
 
-        <tr class="table-success">
-
-
-</a></td>
-        </tr>
+    {% if users %}
+    {%for user in users %}
+      <div class="form-check form-check-inline" >
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox"+i value="option1">
+            <label class="form-check-label" for="inlineCheckbox1">{{user}}</label>
+      </div>
+        </br>
+    {%endfor%}
+    {% endif %}
 
 
-        </tbody>
-    </table>
 
 
 
