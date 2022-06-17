@@ -7,11 +7,6 @@
 {% block content %}
 <div class="container">
     </br>
-    {% if messages %}
-    {%for message in messages %}
-
-    {%endfor%}
-    {% endif %}
     <form method="POST" class="row">
         {% csrf_token %}
         <label class="col-lg-4"></label>
