@@ -1,27 +1,37 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.parsers import JSONParser
 from newgame.models import Game, Tournament, Users
 from newgame.serialzers import GameSerializer, TournamentSerializer, UsersSerializer
+from newgame.form import InputNewNameForm
+
 loser = 5
 
 
-def new_app_page(request):
-    users_name = []
+def list_of_user():
+    users_names = []
     user = Users.objects.all()
     user_serializer = UsersSerializer(user, many=True)
     users_list = user_serializer.data
     for users in users_list:
         for key, value in users.items():
             if key == 'user_name':
-                users_name.append(value)
-    return render(request, 'new_game.html', {'users': users_name})
+                users_names.append(value)
+    return users_names
 
 
-def save_end_game(request, results):
-    if request.method == "Post":
-        return print("ok")
-    #   db.insert_one(models.Game(results))
+def new_app_page(request):
+    if request.method == 'POST':
+        new_user = InputNewNameForm(request.POST or None)
+        users_list = list_of_user()
+        if new_user is not None:
+            name = new_user.data['user_name']
+            if name not in users_list:
+                user = Users(name)
+                user.save()
+
+    users_list = list_of_user()
+    return render(request, 'new_game.html', {'users': users_list})
 
 
 def save_champion(request, results):

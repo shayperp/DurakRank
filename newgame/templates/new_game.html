@@ -7,13 +7,17 @@
 {% block content %}
 <div class="container">
     </br>
-    <form method="POST" class="row">
+
+    </br>
+        <form method="POST" class="row" a>
         {% csrf_token %}
-        <label class="col-lg-4"></label>
-        <input type="text" class="form-control col-lg-6" name="game_name" placeholder="Enter game name ">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary" type="submit">Register</button>
+            </div>
+            <input type="text"  name="user_name" class="form-control" placeholder="Enter new name"  aria-describedby="basic-addon1">
+        </div>
 
-
-        <button type="Start" class="btn btn-primary col-lg-2">start new game</button>
     </form>
     </br>
 

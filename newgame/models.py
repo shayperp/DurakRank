@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.utils.datetime_safe import date
 from djongo import models
+from django import forms
 
 
 class Game(models.Model):
@@ -17,11 +18,14 @@ class Tournament(models.Model):
 
 
 class Users(models.Model):
-    user_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=20)
+    user_id = models.AutoField(primary_key=True)
 
-    def __str__(self):
-        return str(self.user_name)
+
+
+
+
+
 
 
 
