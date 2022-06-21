@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from rest_framework.parsers import JSONParser
 from newgame.models import Game, Tournament, Users
 from newgame.serialzers import GameSerializer, TournamentSerializer, UsersSerializer
-from newgame.form import InputNewNameForm
+from newgame.form import InputNewNameForm, InputNewGameForm
 
 loser = 5
 
@@ -32,6 +32,21 @@ def new_app_page(request):
 
     users_list = list_of_user()
     return render(request, 'new_game.html', {'users': users_list})
+
+
+def game_form(request):
+    if request.method == 'POST':
+        input_form = InputNewGameForm(request.POST or None)
+        print(input_form)
+        player = input_form.data['game_users']
+    return render(request, 'game_page.html', {'players': player})
+
+
+def quick_game(request):
+    context = {'players': ['Reem', 'Shay', 'Kobi']}
+    tournament = Tournament()
+    tournament.games_score = context
+    return render(request, 'game_page.html', context)
 
 
 def save_champion(request, results):

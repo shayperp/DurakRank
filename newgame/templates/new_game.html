@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{%load static%}
 
 {% block title %}
-<title> Enter New Game</title>
+<title xmlns="http://www.w3.org/1999/html"> Enter New Game</title>
 {%endblock title%}
 </br>
 {% block content %}
@@ -9,27 +10,45 @@
     </br>
 
     </br>
-        <form method="POST" class="row" a>
+    <form method="POST" class="row"   style="width:50%;" >
         {% csrf_token %}
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                  <button class="btn btn-outline-secondary" type="submit">Register</button>
+                <button class="btn btn-outline-secondary" type="submit">Register</button>
             </div>
-            <input type="text"  name="user_name" class="form-control" placeholder="Enter new name"  aria-describedby="basic-addon1">
+            <input type="text" name="user_name" class="form-control" placeholder="Enter new player name"
+                  aria-describedby="basic-addon1">
         </div>
 
     </form>
     </br>
 
-    {% if users %}
-    {%for user in users %}
-      <div class="form-check form-check-inline" >
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox" value="option1">
-            <label class="form-check-label" for="inlineCheckbox1">{{user}}</label>
-      </div>
+    <form method="POST" action="{% url 'game_page' %}">
+    {% csrf_token %}
+        {% if users %}
+        {%for user in users %}
+        <div class="form-check form-check-inline" name="game_users">
+            <input class="form-check-input"  name="game_users" id={{user}} type="checkbox" value={{user}}>
+            <label class="form-check-label">{{user}}</label>
+        </div>
         </br>
-    {%endfor%}
-    {% endif %}
+        {%endfor%}
+        </br>
+
+            <input type="text" name="game_name" class="form-control" placeholder="Enter Game name"
+            style="width:47%;">
+        </br>
+
+        </br>
+            <button class="btn btn-secondary" type="submit"  >Start game with choose players</button>
+        {% endif %}
+        </br>
+        </br>
+    </form>
+    <a href="{% url 'quick_game' %}">
+        <button class="btn btn-danger" type="button" name=" Quick-coalition-game ">Start quick Coalition game</button>
+    </a>
+
 </div>
 {%endblock content%}
 

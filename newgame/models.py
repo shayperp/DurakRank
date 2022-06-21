@@ -7,8 +7,8 @@ from django import forms
 
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
-    game_name = models.CharField(max_length=30, default='Game number ')
     game_users = models.JSONField(default={'Reem': '0', 'Shay': '0', 'Kobi': '0'})
+    game_name = models.CharField(max_length=30, default='Game number')
 
 
 class Tournament(models.Model):
