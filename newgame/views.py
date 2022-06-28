@@ -1,13 +1,9 @@
 from django.db.models.lookups import Range
 from django.shortcuts import render
-from newgame.models import Users, TourN  # , Round, RoundForm, Tournament
+from newgame.models import Users, TourN
 from newgame.serialzers import UsersSerializer
 from newgame.form import InputNewNameForm, InputNewGameForm
-
-loser = 5
-players_stat = {'Reem': 0, 'Shay': 0, 'Kobi': 0}
-game_name = "Game number"
-players = ["Reem", "'Shay", "Kobi"]
+from newgame.utility import *
 
 
 def list_of_user():
@@ -63,7 +59,8 @@ def start_tournament(request):
         score = [{'user_name': user, 'score': 0} for user in users]
         name = str(input_form.data['game_name'])
         tournament = TourN()
-        tournament.games_list = [{'game_score': score, 'game_name': name}]
+#       tournament.games_list = [{'game_score': score, 'game_name': name}]
+        tournament.games_list = [make_game(score, name)]
         tournament.save()
     else:
         game_stat = players_stat

@@ -52,4 +52,3 @@ class TourN(models.Model):
     games_list = models.ArrayField(model_container=SingleGameAbstract, model_form_class=SingleGame)
 
     objects = models.DjongoManager()
-
