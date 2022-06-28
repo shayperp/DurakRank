@@ -16,7 +16,7 @@
             <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" type="submit">Register</button>
             </div>
-            <input type="text" name="user_name" class="form-control" placeholder="Enter new player name"
+            <input type="text" name="user_name" class="form-control"  placeholder="Enter new player name"
                   aria-describedby="basic-addon1">
         </div>
 
@@ -28,7 +28,7 @@
         {% if users %}
         {%for user in users %}
         <div class="form-check form-check-inline" name="game_users">
-            <input class="form-check-input"  name="game_users" id={{user}} type="checkbox" value={{user}}>
+            <input class="form-check-input"  name="players[]" id={{user}} type="checkbox" value={{user}}>
             <label class="form-check-label">{{user}}</label>
         </div>
         </br>

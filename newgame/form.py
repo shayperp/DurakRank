@@ -12,5 +12,5 @@ class InputNewNameForm(forms.Form):
 class InputNewGameForm(forms.Form):
     class Meta:
         model = Game
-        fields = ['id', 'game_users', 'game_name']
+        fields = ['game_name', 'game_users']
 

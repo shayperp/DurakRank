@@ -1,28 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}
-<title> Game Page</title>
+    <title> Game Page</title>
 {%endblock title%}
 </br>
 {% block content %}
-<div class="container">
-    </br>
-    </br>
-
-    {% if players %}
-    {%for user in players %}
-
     <div class="container">
-        <h1>{{user}}</h1>
+        </br>
+        </br>
+
+        {% if player %}
+            {%for user in player %}
+
+                <div class="container">
+                    <p>{{user}}</p>
+                </div>
+                </br>
+            {% endfor %}
+        {% endif %}
+
+{#        {% if tournament_id %}#}
+{#            <div class="container">#}
+{#                <p>{{tournament_id}}</p>#}
+{#            </div>#}
+{#        {% endif %}#}
+
+        {% if game_name %}
+            <div class="container">
+                <p>{{game_name}}</p>
+            </div>
+        {% endif %}
+
+        <button class="btn btn-danger" type="button" href="{% url 'index'%}">Main Page</button>
+
     </div>
-
-    </br>
-    {%endfor%}
-    {% endif %}
-
-    <button class="btn btn-danger" type="button" href="{% url 'index'%}">Main Page</button>
-
-</div>
 {%endblock content%}
-
 
 
