@@ -24,6 +24,6 @@ urlpatterns = [
     path('', records_views.index, name='index'),
     path('records/', records_views.records_page, name='records'),
     path('newgame/', include('newgame.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
