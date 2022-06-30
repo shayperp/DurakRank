@@ -1,38 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
     <title> Game Page</title>
-{%endblock title%}
+    <head>
+
+    </head>
+{% endblock title %}
 </br>
 {% block content %}
     <div class="container">
         </br>
         </br>
 
-        {% if player %}
-            {%for user in player %}
 
-                <div class="container">
-                    <p>{{user}}</p>
-                </div>
-                </br>
-            {% endfor %}
-        {% endif %}
+        <!------ Include the above in your HEAD tag ---------->
 
-{#        {% if tournament_id %}#}
-{#            <div class="container">#}
-{#                <p>{{tournament_id}}</p>#}
-{#            </div>#}
-{#        {% endif %}#}
-
+<div class="def-number-input number-input safari_only" href=" {%  static 'css/counter.css' %}">
+  <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"  href=" {%  static 'css/counter.css' %}"></button>
+  <input class="quantity" min="0"  max="5" name="quantity" value="1" type="number"  href=" {%  static 'css/counter.css' %}">
+  <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"  href=" {%  static 'css/counter.css' %}"></button>
+</div>
+        {#        {% if tournament_id %}#}
+            {#            <div class="container">#}
+            {#                <p>{{tournament_id}}</p>#}
+            {#            </div>#}
+            {#        {% endif %}#}
+        </div>
         {% if game_name %}
             <div class="container">
-                <p>{{game_name}}</p>
-            </div>
+            <p>{{ game_name }}</p>
+
         {% endif %}
 
-        <button class="btn btn-danger" type="button" href="{% url 'index'%}">Main Page</button>
-
+        <button class="btn btn-danger" type="button" href="{% url 'index' %}">Main Page</button>
+        </div>
     </div>
-{%endblock content%}
+{% endblock content %}
 
 

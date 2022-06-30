@@ -39,7 +39,7 @@ def game_form(request):
             print(input_form)
             player = input_form.data['game_users']
         else:
-            player = players
+            player = players_default
     return render(request, 'game_page.html', {'players': player})
 
 
@@ -54,21 +54,26 @@ def start_tournament(request):
         input_form = InputNewGameForm(request.POST or None)
         if input_form.is_valid():
             if input_form.data['game_name'] is not None:
-                users = request.POST.getlist('players[]')
+                users = request.POST.getlist(players_list)
 
         score = [{'user_name': user, 'score': 0} for user in users]
         name = str(input_form.data['game_name'])
+        print(score)
+        print(name)
         tournament = TourN()
-#       tournament.games_list = [{'game_score': score, 'game_name': name}]
         tournament.games_list = [make_game(score, name)]
         tournament.save()
     else:
         game_stat = players_stat
+
     return render(request, 'game_page.html', game_stat)
 
 
 def quick_tournament(request):
-    pass
+    tournament = TourN()
+    tournament.games_list = [make_game(quick_score, quick_name)]
+    tournament.save()
+    return render(request, 'game_page.html', game_stat)
 
 
 def game_continues(request):

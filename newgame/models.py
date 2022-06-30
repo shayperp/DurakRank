@@ -3,9 +3,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.datetime_safe import date
 from djongo import models
 from django import forms
-loser = 5
-players_stat = {'Reem': 0, 'Shay': 0, 'Kobi': 0}
-players = ["Reem", "'Shay", "Kobi"]
 
 
 class Users(models.Model):
@@ -19,7 +16,7 @@ class Game(models.Model):
 
 
 class GameScore(models.Model):
-    user_name = models.CharField(max_length=20, primary_key=True,)
+    user_name = models.CharField(max_length=20, primary_key=True, )
     score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     class Meta:
@@ -31,7 +28,7 @@ class GameScore(models.Model):
 
 class SingleGameAbstract(models.Model):
     game_score = models.ArrayField(model_container=GameScore)
-    game_name = models.CharField(max_length=30, default="Game number", primary_key=True,)
+    game_name = models.CharField(max_length=30, default="Game number", primary_key=True, )
 
     class Meta:
         managed = False
@@ -52,3 +49,4 @@ class TourN(models.Model):
     games_list = models.ArrayField(model_container=SingleGameAbstract, model_form_class=SingleGame)
 
     objects = models.DjongoManager()
+
