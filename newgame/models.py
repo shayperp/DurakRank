@@ -12,7 +12,7 @@ class Users(models.Model):
 
 class Game(models.Model):
     game_name = models.CharField(max_length=30, default='Game number ')
-    game_users = models.JSONField(default={'Reem': '0', 'Shay': '0', 'Kobi': '0'})
+    game_users = models.JSONField()
 
 
 class GameScore(models.Model):

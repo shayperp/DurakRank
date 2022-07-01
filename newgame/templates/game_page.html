@@ -1,40 +1,130 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block title %}
     <title> Game Page</title>
     <head>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+              id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+            .qty .count {
+                color: #000;
+                display: inline-block;
+                vertical-align: top;
+                font-size: 25px;
+                font-weight: 700;
+                line-height: 30px;
+                padding: 0 2px;
+                min-width: 35px;
+                text-align: center;
+            }
 
+            .qty .plus {
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: top;
+                color: white;
+                width: 30px;
+                height: 30px;
+                font: 30px/1 Arial, sans-serif;
+                text-align: center;
+                border-radius: 50%;
+            }
+
+            .qty .minus {
+                cursor: pointer;
+                display: inline-block;
+                vertical-align: top;
+                color: white;
+                width: 30px;
+                height: 30px;
+                font: 30px/1 Arial, sans-serif;
+                text-align: center;
+                border-radius: 50%;
+                background-clip: padding-box;
+            }
+
+            div {
+                text-align: center;
+            }
+
+            .minus:hover {
+                background-color: #717fe0 !important;
+            }
+
+            .plus:hover {
+                background-color: #717fe0 !important;
+            }
+
+            /*Prevent text selection*/
+            span {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+            }
+
+            input {
+                border: 0;
+                width: 2%;
+            }
+
+            nput::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input:disabled {
+                background-color: white;
+            }
+
+
+        </style>
     </head>
 {% endblock title %}
 </br>
 {% block content %}
-    <div class="container">
-        </br>
-        </br>
 
 
-        <!------ Include the above in your HEAD tag ---------->
-
-<div class="def-number-input number-input safari_only" href=" {%  static 'css/counter.css' %}">
-  <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"  href=" {%  static 'css/counter.css' %}"></button>
-  <input class="quantity" min="0"  max="5" name="quantity" value="1" type="number"  href=" {%  static 'css/counter.css' %}">
-  <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"  href=" {%  static 'css/counter.css' %}"></button>
-</div>
-        {#        {% if tournament_id %}#}
-            {#            <div class="container">#}
-            {#                <p>{{tournament_id}}</p>#}
-            {#            </div>#}
-            {#        {% endif %}#}
-        </div>
+    <div class="container|center" name=" Headline game_name">
         {% if game_name %}
-            <div class="container">
-            <p>{{ game_name }}</p>
 
+            <label style=""><h1>{{ game_name }}</h1></label>
+            </br>
+            </br>
+            <!------ Include the above in your HEAD tag ---------->
         {% endif %}
-
-        <button class="btn btn-danger" type="button" href="{% url 'index' %}">Main Page</button>
-        </div>
     </div>
+<div name = "player component">
+        {% if user_name %}
+            {% for user in user_name %}
+                <h3>{{ user }}</h3>
+                <div class="qty mt-5">
+                    <span class="minus bg-dark" onclick="minusOne({{user}})">-</span>
+                    <input type="number" class="count" min="0" name="qty" value="0" id={{user}}>
+                    <span class="plus bg-dark" onclick="plusOne({{user}})">+</span>
+
+                    <script>
+                      function plusOne(id){
+                           document.getElementById(id).stepUp(1);
+                      }
+                   function minusOne(id){
+                          document.getElementById(id).stepDown(1);
+                      }
+                    </script>
+                </div>
+                </br>
+            {% endfor %}
+             </br>
+             </br>
+        {% endif %}
+</div>
+        <a href="{% url 'index' %}">
+            <button class="btn btn-danger" style="align-items: center" type="button">Main Page</button>
+        </a>
+    </div>
+
 {% endblock content %}
 
 

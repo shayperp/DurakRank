@@ -63,16 +63,20 @@ def start_tournament(request):
         tournament = TourN()
         tournament.games_list = [make_game(score, name)]
         tournament.save()
+        game_stat[userName_field] = users
+        game_stat[gameName_field] = name
+        game_stat['tournament_id'] = tournament.tournament_id
     else:
-        game_stat = players_stat
+        pass
 
     return render(request, 'game_page.html', game_stat)
 
 
 def quick_tournament(request):
-    tournament = TourN()
-    tournament.games_list = [make_game(quick_score, quick_name)]
-    tournament.save()
+    # tournament = TourN()
+    # tournament.games_list = [make_game(quick_score, quick_name)]
+    # tournament.save()
+    game_stat = {userName_field: players_default, gameName_field: quick_name}
     return render(request, 'game_page.html', game_stat)
 
 
