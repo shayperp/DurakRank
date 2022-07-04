@@ -47,6 +47,8 @@ class TourN(models.Model):
     tournament_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     play_date = models.DateField(default=date.today)
     games_list = models.ArrayField(model_container=SingleGameAbstract, model_form_class=SingleGame)
-
     objects = models.DjongoManager()
+
+
+
 

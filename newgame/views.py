@@ -1,8 +1,8 @@
 from django.db.models.lookups import Range
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from newgame.models import Users, TourN
 from newgame.serialzers import UsersSerializer
-from newgame.form import InputNewNameForm, InputNewGameForm
+from newgame.form import InputNewNameForm, InputNewGameForm, EndGameForm
 from newgame.utility import *
 
 
@@ -78,6 +78,24 @@ def quick_tournament(request):
     # tournament.save()
     game_stat = {userName_field: players_default, gameName_field: quick_name}
     return render(request, 'game_page.html', game_stat)
+
+
+def end_of_game(request):
+    if request.method == 'POST':
+        input_form = EndGameForm(request.POST or None)
+        if input_form.is_valid():
+            if input_form.data is not None:
+                #  id_tour = input_form['tournament_id']
+                score = request.POST.getlist('score[]')
+                #   tournament = TourN.objects.filter(tournament_id=id_tour).values()
+                tournament = TourN.objects.last()
+                db_score = tournament.games_list[-1]
+                print("From Form:")
+                print(score)
+                print("From DB")
+                print(db_score)
+                return render(request, 'game_page.html')
+    return render(request, '/records/template/index.html')
 
 
 def game_continues(request):

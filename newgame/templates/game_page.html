@@ -6,7 +6,7 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
               id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <style>
             .qty .count {
                 color: #000;
@@ -88,41 +88,58 @@
 
 
     <div class="container|center" name=" Headline game_name">
+        {% csrf_token %}
         {% if game_name %}
 
             <label style=""><h1>{{ game_name }}</h1></label>
             </br>
             </br>
-            <!------ Include the above in your HEAD tag ---------->
+            <!------ $('#something').click(function(){
+    $('#your_form').submit()
+}); ---------->
         {% endif %}
     </div>
-<div name = "player component">
-        {% if user_name %}
-            {% for user in user_name %}
-                <h3>{{ user }}</h3>
-                <div class="qty mt-5">
-                    <span class="minus bg-dark" onclick="minusOne({{user}})">-</span>
-                    <input type="number" class="count" min="0" name="qty" value="0" id={{user}}>
-                    <span class="plus bg-dark" onclick="plusOne({{user}})">+</span>
+    <form method="POST" action="{% url 'end_of_game' %}" name="game_form" id="game_form_id">
 
-                    <script>
-                      function plusOne(id){
-                           document.getElementById(id).stepUp(1);
-                      }
-                   function minusOne(id){
-                          document.getElementById(id).stepDown(1);
-                      }
-                    </script>
-                </div>
+        <div name="player component">
+            {% csrf_token %}
+            {% if user_name %}
+                {% for user in user_name %}
+                    <h3>{{ user }}</h3>
+                    <div class="qty mt-5">
+                        <span class="minus bg-dark" onClick="minusOne('{{ user }}')">-</span>
+                        <input type="number" class="count" min="0" max="5" name="score[]" value="0" id={{ user }}>
+                        <span class="plus bg-dark" onClick="plusOne('{{ user }}')">+</span>
+
+                        <script>
+                            function minusOne(id) {
+                                document.getElementById(id).stepDown(1);
+                            }
+
+                            function plusOne(id) {
+                                const e = document.getElementById(id);
+                                document.getElementById(id).stepUp(1);
+                                if (e.value > 4) {
+                                    alert("loser " + id)
+
+                                    $('#game_form_id').submit();
+
+                                }
+                            }
+                        </script>
+                    </div>
+                    </br>
+                {% endfor %}
                 </br>
-            {% endfor %}
-             </br>
-             </br>
-        {% endif %}
-</div>
-        <a href="{% url 'index' %}">
-            <button class="btn btn-danger" style="align-items: center" type="button">Main Page</button>
-        </a>
+                </br>
+            {% endif %}
+        </div>
+        <button class="btn btn-dark" style="align-items: center" type="submit">End Game</button>
+
+    </form>
+    <a href="{% url 'index' %}">
+        <button class="btn btn-danger" style="align-items: center" type="button">Main Page</button>
+    </a>
     </div>
 
 {% endblock content %}
