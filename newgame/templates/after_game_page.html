@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block title %}
+<title xmlns="http://www.w3.org/1999/html">After Game</title>
+{%endblock title%}
+</br>
+{% block content %}
+<div class="container">
+    </br>
+
+    </br>
+
+
+        </br>
+
+        </br>
+        <a href="{% url 'index' %}">
+            <button class="btn btn-success" type="submit"  >Results</button>
+                </a>
+
+    <a href="{% url 'new_game' %}">
+        <button class="btn btn-primary" type="button" name=" Quick-coalition-game ">New Game </button>
+    </a>
+ <a href="{% url 'index' %}">
+        <button class="btn btn-danger" type="button" name=" Quick-coalition-game ">Main Page </button>
+    </a>
+
+</div>
+{%endblock content%}
+
+
+

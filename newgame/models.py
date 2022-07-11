@@ -6,7 +6,6 @@ from django import forms
 
 
 class Users(models.Model):
-    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_name = models.CharField(max_length=20)
 
 
@@ -44,11 +43,7 @@ class SingleGame(forms.ModelForm):
 
 
 class TourN(models.Model):
-    tournament_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.ObjectIdField(primary_key=True, editable=False)
     play_date = models.DateField(default=date.today)
     games_list = models.ArrayField(model_container=SingleGameAbstract, model_form_class=SingleGame)
     objects = models.DjongoManager()
-
-
-
-

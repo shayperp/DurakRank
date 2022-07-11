@@ -1,3 +1,4 @@
+from bson import ObjectId
 from django.db.models.lookups import Range
 from django.shortcuts import render, redirect
 from newgame.models import Users, TourN
@@ -18,16 +19,22 @@ def list_of_user():
     return users_names
 
 
-def new_app_page(request):
-    if request.method == 'POST':
-        new_user = InputNewNameForm(request.POST or None)
-        users_list = list_of_user()
-        if new_user is not None:
-            name = new_user.data['user_name']
-            if name not in users_list:
-                user = Users(name)
-                user.save()
+def new_user(request):
 
+    if request.method == 'POST':
+        user_form_element = InputNewNameForm(request.POST or None)
+        users_list = list_of_user()
+        if user_form_element.is_valid():
+            name = user_form_element.data['user_name']
+            if name is not None:
+                if name not in users_list:
+                    print(name)
+                    user = Users(user_name=name)
+                    user.save()
+    return new_app_page(request)
+
+
+def new_app_page(request):
     users_list = list_of_user()
     return render(request, 'new_game.html', {'users': users_list})
 
@@ -36,7 +43,6 @@ def game_form(request):
     if request.method == 'POST':
         if request.POST.is_valid():
             input_form = InputNewGameForm(request.POST or None)
-            print(input_form)
             player = input_form.data['game_users']
         else:
             player = players_default
@@ -55,17 +61,14 @@ def start_tournament(request):
         if input_form.is_valid():
             if input_form.data['game_name'] is not None:
                 users = request.POST.getlist(players_list)
-
+                name = request.POST.get('game_name', False)
         score = [{'user_name': user, 'score': 0} for user in users]
-        name = str(input_form.data['game_name'])
-        print(score)
-        print(name)
         tournament = TourN()
         tournament.games_list = [make_game(score, name)]
         tournament.save()
         game_stat[userName_field] = users
         game_stat[gameName_field] = name
-        game_stat['tournament_id'] = tournament.tournament_id
+        game_stat['tournament_id'] = tournament.id
     else:
         pass
 
@@ -85,17 +88,22 @@ def end_of_game(request):
         input_form = EndGameForm(request.POST or None)
         if input_form.is_valid():
             if input_form.data is not None:
-                #  id_tour = input_form['tournament_id']
-                score = request.POST.getlist('score[]')
-                #   tournament = TourN.objects.filter(tournament_id=id_tour).values()
-                tournament = TourN.objects.last()
-                db_score = tournament.games_list[-1]
-                print("From Form:")
-                print(score)
-                print("From DB")
-                print(db_score)
-                return render(request, 'game_page.html')
-    return render(request, '/records/template/index.html')
+                values_players = request.POST.getlist('score[]')
+                id_tour = request.POST.get('tournament_id', False)
+                if id_tour is not None:
+                    id_torun = id_tour.replace('/', '')
+                    print(id_torun)
+
+                    tour = [TourN.objects.all()]
+                    print(tour)
+                    for u in tour:
+                        print(dict(u))
+                else:
+                    pass
+                if values_players is not None:     # need to replace
+                    pass
+
+    return render(request, 'after_game_page.html')
 
 
 def game_continues(request):

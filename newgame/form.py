@@ -6,7 +6,7 @@ from newgame.models import Users, Game, TourN
 class InputNewNameForm(forms.Form):
     class Meta:
         model = Users
-        fields = ["user_id", 'user_name']
+        fields = ['user_name']
 
 
 class InputNewGameForm(forms.Form):

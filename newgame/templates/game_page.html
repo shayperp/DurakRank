@@ -94,12 +94,10 @@
             <label style=""><h1>{{ game_name }}</h1></label>
             </br>
             </br>
-            <!------ $('#something').click(function(){
-    $('#your_form').submit()
-}); ---------->
+
         {% endif %}
     </div>
-    <form method="POST" action="{% url 'end_of_game' %}" name="game_form" id="game_form_id">
+    <form method="POST" action="{% url 'end_of_game'  %}"  id="game_form_id">
 
         <div name="player component">
             {% csrf_token %}
@@ -120,8 +118,6 @@
                                 const e = document.getElementById(id);
                                 document.getElementById(id).stepUp(1);
                                 if (e.value > 4) {
-                                    alert("loser " + id)
-
                                     $('#game_form_id').submit();
 
                                 }
@@ -133,8 +129,11 @@
                 </br>
                 </br>
             {% endif %}
+          <input type="hidden" id="tournament_id" name="tournament_id" value = {{ tournament_id }}/>
         </div>
+
         <button class="btn btn-dark" style="align-items: center" type="submit">End Game</button>
+
 
     </form>
     <a href="{% url 'index' %}">
