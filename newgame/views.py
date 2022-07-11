@@ -1,8 +1,9 @@
 from bson import ObjectId
 from django.db.models.lookups import Range
+from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from newgame.models import Users, TourN
-from newgame.serialzers import UsersSerializer
+from newgame.serialzers import UsersSerializer, TournamentSerializer
 from newgame.form import InputNewNameForm, InputNewGameForm, EndGameForm
 from newgame.utility import *
 
@@ -20,7 +21,6 @@ def list_of_user():
 
 
 def new_user(request):
-
     if request.method == 'POST':
         user_form_element = InputNewNameForm(request.POST or None)
         users_list = list_of_user()
@@ -28,7 +28,6 @@ def new_user(request):
             name = user_form_element.data['user_name']
             if name is not None:
                 if name not in users_list:
-                    print(name)
                     user = Users(user_name=name)
                     user.save()
     return new_app_page(request)
@@ -64,11 +63,12 @@ def start_tournament(request):
                 name = request.POST.get('game_name', False)
         score = [{'user_name': user, 'score': 0} for user in users]
         tournament = TourN()
+        name = name if name is not None else quick_name
         tournament.games_list = [make_game(score, name)]
         tournament.save()
         game_stat[userName_field] = users
         game_stat[gameName_field] = name
-        game_stat['tournament_id'] = tournament.id
+        game_stat['tournament_id'] = tournament.pk
     else:
         pass
 
@@ -92,15 +92,19 @@ def end_of_game(request):
                 id_tour = request.POST.get('tournament_id', False)
                 if id_tour is not None:
                     id_torun = id_tour.replace('/', '')
-                    print(id_torun)
+                    tour_serial = TourN.objects.filter(pk=id_torun)
+                    tourn_obj = tour_serial[0]
+                    first_game = tourn_obj.games_list[0][score_field]
+                    i = int(0)
+                    for users in first_game:
+                        users['score'] = values_players[i]
+                        i += 1
+                    tourn_obj.games_list[0][score_field] = first_game
+                    tourn_obj.save()
 
-                    tour = [TourN.objects.all()]
-                    print(tour)
-                    for u in tour:
-                        print(dict(u))
                 else:
                     pass
-                if values_players is not None:     # need to replace
+                if values_players is not None:  # need to replace
                     pass
 
     return render(request, 'after_game_page.html')

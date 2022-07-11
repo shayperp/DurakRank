@@ -43,7 +43,7 @@ class SingleGame(forms.ModelForm):
 
 
 class TourN(models.Model):
-    id = models.ObjectIdField(primary_key=True, editable=False)
+    id = models.BigAutoField(primary_key=True)
     play_date = models.DateField(default=date.today)
     games_list = models.ArrayField(model_container=SingleGameAbstract, model_form_class=SingleGame)
     objects = models.DjongoManager()
