@@ -1,6 +1,6 @@
 loser = 5
 players_stat = {'Reem': 0, 'Shay': 0, 'Kobi': 0}
-game_name = "Game number"
+game_name = "Game"
 players_default = ['Reem', 'Shay', 'Kobi']
 players_list = 'players[]'
 score_field = 'game_score'

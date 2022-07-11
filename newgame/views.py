@@ -58,7 +58,7 @@ def start_tournament(request):
         score = [{'user_name': user, 'score': 0} for user in users]
         tournament = TourN()
         if not name:
-            name = game_name
+            name = game_name+" " + str(1)
         tournament.games_list = [make_game(score, name)]
         tournament.save()
         game_stat[userName_field] = users
@@ -114,8 +114,8 @@ def game_continues(request):
         input_form = GameContinuesForm(request.POST or None)
         if input_form.is_valid():
             if input_form.data is not None:
-                id_tour = request.POST.get('tournament_id', False)
-                name = request.POST.get('game_name', False)
+                id_tour = input_form.data['tournament_id']
+                name = input_form.data['game_name']
 
                 if id_tour is not None:
                     id_torun = id_tour.replace('/', '')
@@ -126,7 +126,7 @@ def game_continues(request):
                         users.append(p[userName_field])
                     score = [{'user_name': user, 'score': 0} for user in users]
                     if not name:
-                        name = "Game number "+len(tourn_obj.games_list)
+                        name = "Game "+str(1+len(tourn_obj.games_list))
                     tourn_obj.games_list.append(make_game(score, name))
                     tourn_obj.save()
                     game_stat[userName_field] = users
