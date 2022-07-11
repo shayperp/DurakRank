@@ -21,4 +21,7 @@ class EndGameForm(forms.Form):
         fields = ['tournament_id', 'games_list']
 
 
+class GameContinuesForm(forms.Form):
+    class Meta:
+        fields = ['tournament_id', 'game_name']
 

@@ -1,10 +1,8 @@
-from bson import ObjectId
-from django.db.models.lookups import Range
-from django.http import HttpRequest
-from django.shortcuts import render, redirect
+
+from django.shortcuts import render
 from newgame.models import Users, TourN
-from newgame.serialzers import UsersSerializer, TournamentSerializer
-from newgame.form import InputNewNameForm, InputNewGameForm, EndGameForm
+from newgame.serialzers import UsersSerializer
+from newgame.form import InputNewNameForm, InputNewGameForm, EndGameForm, GameContinuesForm
 from newgame.utility import *
 
 
@@ -48,10 +46,6 @@ def game_form(request):
     return render(request, 'game_page.html', {'players': player})
 
 
-def quick_game(request):
-    pass
-
-
 def start_tournament(request):
     game_stat = {}
     users = [None]
@@ -63,7 +57,8 @@ def start_tournament(request):
                 name = request.POST.get('game_name', False)
         score = [{'user_name': user, 'score': 0} for user in users]
         tournament = TourN()
-        name = name if name is not None else quick_name
+        if not name:
+            name = game_name
         tournament.games_list = [make_game(score, name)]
         tournament.save()
         game_stat[userName_field] = users
@@ -76,14 +71,15 @@ def start_tournament(request):
 
 
 def quick_tournament(request):
-    # tournament = TourN()
-    # tournament.games_list = [make_game(quick_score, quick_name)]
-    # tournament.save()
-    game_stat = {userName_field: players_default, gameName_field: quick_name}
+    tournament = TourN()
+    tournament.games_list = [make_game(quick_score, quick_name)]
+    tournament.save()
+    game_stat = {userName_field: players_default, gameName_field: quick_name, 'tournament_id': tournament.pk}
     return render(request, 'game_page.html', game_stat)
 
 
 def end_of_game(request):
+    game_stat = {}
     if request.method == 'POST':
         input_form = EndGameForm(request.POST or None)
         if input_form.is_valid():
@@ -94,24 +90,50 @@ def end_of_game(request):
                     id_torun = id_tour.replace('/', '')
                     tour_serial = TourN.objects.filter(pk=id_torun)
                     tourn_obj = tour_serial[0]
-                    first_game = tourn_obj.games_list[0][score_field]
-                    i = int(0)
-                    for users in first_game:
-                        users['score'] = values_players[i]
-                        i += 1
-                    tourn_obj.games_list[0][score_field] = first_game
+                    first_game = tourn_obj.games_list[-1][score_field]
+
+                    for index, users in enumerate(first_game, start=0):
+                        users['score'] = values_players[index]
+
+                    tourn_obj.games_list[-1][score_field] = first_game
                     tourn_obj.save()
+                    game_stat['tournament_id'] = id_torun
 
                 else:
                     pass
                 if values_players is not None:  # need to replace
                     pass
 
-    return render(request, 'after_game_page.html')
+    return render(request, 'after_game_page.html', game_stat)
 
 
 def game_continues(request):
-    pass
+    game_stat = {}
+    users = []
+    if request.method == 'POST':
+        input_form = GameContinuesForm(request.POST or None)
+        if input_form.is_valid():
+            if input_form.data is not None:
+                id_tour = request.POST.get('tournament_id', False)
+                name = request.POST.get('game_name', False)
+
+                if id_tour is not None:
+                    id_torun = id_tour.replace('/', '')
+                    tour_serial = TourN.objects.filter(pk=id_torun)
+                    tourn_obj = tour_serial[0]
+                    game = tourn_obj.games_list[0][score_field]
+                    for p in game:
+                        users.append(p[userName_field])
+                    score = [{'user_name': user, 'score': 0} for user in users]
+                    if not name:
+                        name = "Game number "+len(tourn_obj.games_list)
+                    tourn_obj.games_list.append(make_game(score, name))
+                    tourn_obj.save()
+                    game_stat[userName_field] = users
+                    game_stat[gameName_field] = name
+                    game_stat['tournament_id'] = id_torun
+    return render(request, 'game_page.html', game_stat)
+
 
 # def save_champion(request, results):
 #     for player, score in results.items():

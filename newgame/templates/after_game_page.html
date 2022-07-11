@@ -18,13 +18,23 @@
         <a href="{% url 'index' %}">
             <button class="btn btn-success" type="submit"  >Results</button>
                 </a>
-
-    <a href="{% url 'new_game' %}">
-        <button class="btn btn-primary" type="button" name=" Quick-coalition-game ">New Game </button>
-    </a>
- <a href="{% url 'index' %}">
+     <a href="{% url 'index' %}">
         <button class="btn btn-danger" type="button" name=" Quick-coalition-game ">Main Page </button>
     </a>
+    <Form method="POST" action="{% url 'game_continues' %}">
+    {% csrf_token %}
+
+
+        <button class="btn btn-primary" type="submit" name=" Quick-coalition-game " >New Game </button>
+                </br>
+            <input type="text" name="game_name" class="form-control" placeholder="Enter Game name"
+            style="width:47%;">
+        {%if tournament_id%}
+        <input type="hidden" id="tournament_id" name="tournament_id" value = {{ tournament_id }}/>
+        </br>
+            {%endif %}
+        </Form>
+
 
 </div>
 {%endblock content%}
